@@ -1,0 +1,32 @@
+<BillingUI>:
+    console: c
+    BuyStuff:
+        size_hint: (0.5, 1.0)
+        pos_hint: {'x': 0.0, 'y': 0.0}
+        orientation: 'vertical'
+        product_list: pl
+        BoxLayout: 
+            id: pl
+            size_hint: (1.0, 0.7)
+            orientation: 'vertical'
+        Label:
+            text: "Check logcat for logging."
+            id: c
+            size_hint: (1.0, 0.3)
+            text_size: (self.width * 0.94, None)
+            font_size: self.height * 0.1
+            
+    AfterConsumption:
+        size_hint: (0.5, 1.0)
+        pos_hint: {'x': 0.5, 'y': 0.0}
+        orientation: 'vertical'
+        consumed_list: cl
+        GridLayout:
+            id: cl
+            cols: 2
+            col_default_width: self.width * 0.5
+            col_force_default: True
+            row_default_height: self.height * 0.2
+            row_force_default: True
+
+        
