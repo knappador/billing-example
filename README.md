@@ -13,7 +13,7 @@ Uses Android Trivial Drive java classes mostly unmodified.  The IabHelper class 
 Installs as-is with debug key and can make a purchase.  Every purchase is automatically consumed and a button shows up on the UI. This code is based on **production code in the middle of cleaning up**.  You can use this code with minor work in a real app.  It's really ugly.
 
 ###Todo
-Most immediately, the PyJNIus warnings, Dalkvik auto-correcting errors, and the error that happens in purchase callback need to be taken care of.  The code can't be made clean if the result doesn't work.  I had to completely comment out the callback useage in `org.kivy.billing`
+Most immediately, the PyJNIus warnings, Dalkvik auto-correcting errors, and the error that happens in purchase callback need to be taken care of.  The code can't be made clean if the result doesn't work.  I had to completely comment out the callback useage in `org.kivy.billing.IabHelper.handleActivityResult`.  I don't know if I was using the run_on_ui_thread incorrectly or what.  It was bad
 
 ###Mock Module
 Please maintain any API changes in the mock module so that developers can test locally.  The method of import I don't care about.
