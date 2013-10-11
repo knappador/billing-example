@@ -17,6 +17,9 @@ PyJNIus implementation of billing.  Has Kivy as dependency.  You like Kivy.
 ###External Java Code
 Uses Android Trivial Drive java classes mostly unmodified.  The IabHelper class provides most of the API used in androidbilling.py.  
 
+###Status
+Going straight into some production code  If something is broken, file bug.  Post logcat preferably.
+
 ###Todo
 Want callbacks?  Saving data?  My Twitter example uses both of these.
 
