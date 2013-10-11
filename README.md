@@ -1,26 +1,29 @@
 #In-App Billing v3 PyJNIus Module
 
+Buy things from Kivy apps on Android.
+
+###Features
+* Checks for network, prompts user and has hooks to implement your own prompts.  
+* Automatically set itself up and check inventory and buy products automatically with a configureable time.  
+* Alternatively, will setup when user makes a purchase.  Will not interfere with automatic setup.
+* Has `purchased` property to capture purchase consumptions.  Times out and has hook to prompt for retry.
+
 ###License
 Some code in Trivial Drive java classes (for Base64.java) has strange license.  Most of the Java classes are Apache2 from Android SDK.  This code is MIT
 
 ###Goal
-Old Billing uses JNI and Cython.  It was based on API v2 and cannot consume purchases.  This one aims to be more maintainable and expose more API.
+PyJNIus implementation of billing.  Has Kivy as dependency.  You like Kivy.
 
-###Overview
+###External Java Code
 Uses Android Trivial Drive java classes mostly unmodified.  The IabHelper class provides most of the API used in androidbilling.py.  
 
-###Status
-Installs as-is with debug key and can make a purchase.  Every purchase is automatically consumed and a button shows up on the UI. This code is based on **production code in the middle of cleaning up**.  You can use this code with minor work in a real app.  It's really ugly.
-
 ###Todo
-Most immediately, the PyJNIus warnings, Dalkvik auto-correcting errors, and the error that happens in purchase callback need to be taken care of.  The code can't be made clean if the result doesn't work.  I had to completely comment out the callback useage in `org.kivy.billing.IabHelper.handleActivityResult`.  I don't know if I was using the run_on_ui_thread incorrectly or what.  It was bad
+Want callbacks?  Saving data?  My Twitter example uses both of these.
 
 ###Mock Module
 Please maintain any API changes in the mock module so that developers can test locally.  The method of import I don't care about.
 
 ##Building (Advise using fresh P4A dist)
-1.  link the src directory to your P4A src directory `ln -s src ~/my/cloned/billing/src`
-2.  copy AndroidManifest over
-3.  use the billing_build.sh from `billing/script` from inside the dist.  `./billing_build.sh ~/my/cloned/billing`
-
-Obviously I want to fix a lot of things and impement a more useful API, but the PyJNIus useage might not be correct yet.  That's a good place to start.  Storing purchases and making refunds etc will have to come **after** PyJNIus parts are better.
+1.  link the src/org/kivy directory to your P4A src/ directory `ln -s src/org/kivy ~/mydist/src/org/kivy`
+2.  add the billing permission to mydist/templates/AndroidManifest.tmpl.xml.  See AndroidManifest.extras.xml
+3.  use the billing.sh inside your dist/mydist with `./billing.sh ~/my/cloned/billing`

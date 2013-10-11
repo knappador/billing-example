@@ -1,0 +1,4 @@
+  <!-- add this permission manually because the existing p4a module   -->
+  <!-- isn't what we want and the --permission option doesn't support -->
+  <!-- the billing permission name -->
+  <uses-permission android:name="com.android.vending.BILLING" />

@@ -90,11 +90,11 @@ public class IabHelper {
     String mDebugTag = "IabHelper";
 
     // Is setup done?
-    boolean mSetupDone = false;
+    public boolean mSetupDone = false;
 
     // Is an asynchronous operation in progress?
     // (only one at a time can be in progress)
-    boolean mAsyncInProgress = false;
+    public boolean mAsyncInProgress = false;
 
     // (for logging/debugging)
     // if mAsyncInProgress == true, what asynchronous operation is in progress?
@@ -376,8 +376,8 @@ public class IabHelper {
 
         if (data == null) {
             logError("Null data in IAB activity result.");
-            //result = new IabResult(IABHELPER_BAD_RESPONSE, "Null data in IAB result");
-            //if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
+            result = new IabResult(IABHELPER_BAD_RESPONSE, "Null data in IAB result");
+            if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
             return false;
         }
 
@@ -394,8 +394,8 @@ public class IabHelper {
             if (purchaseData == null || dataSignature == null) {
                 logError("BUG: either purchaseData or dataSignature is null.");
                 logDebug("Extras: " + data.getExtras().toString());
-                //result = new IabResult(IABHELPER_UNKNOWN_ERROR, "IAB returned null purchaseData or dataSignature");
-                //if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
+                result = new IabResult(IABHELPER_UNKNOWN_ERROR, "IAB returned null purchaseData or dataSignature");
+                if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
                 return false;
             }
 
@@ -407,46 +407,45 @@ public class IabHelper {
                 // Verify signature
                 if (!Security.verifyPurchase(mSignatureBase64, purchaseData, dataSignature)) {
                     logError("Purchase signature verification FAILED for sku " + sku);
-                    //result = new IabResult(IABHELPER_VERIFICATION_FAILED, "Signature verification failed for sku " + sku);
-                    //if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, purchase);
+                    result = new IabResult(IABHELPER_VERIFICATION_FAILED, "Signature verification failed for sku " + sku);
+                    if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, purchase);
                     return false;
                 }
                 logDebug("Purchase signature successfully verified.");
             }
             catch (JSONException e) {
                 logError("Failed to parse purchase data.");
-                //e.printStackTrace();
-                //result = new IabResult(IABHELPER_BAD_RESPONSE, "Failed to parse purchase data.");
-                //if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
+                e.printStackTrace();
+                result = new IabResult(IABHELPER_BAD_RESPONSE, "Failed to parse purchase data.");
+                if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
                 return false;
             }
 
             if (mPurchaseListener != null) {
                 logDebug("Everything okay, but if we call mPurchaseListener.onIabPurchaseFinished, it will explode");
-                //mPurchaseListener.onIabPurchaseFinished(new IabResult(BILLING_RESPONSE_RESULT_OK, "Success"), purchase);
-                //logDebug("We got past the call.  Did the shit blow up?");
+                mPurchaseListener.onIabPurchaseFinished(new IabResult(BILLING_RESPONSE_RESULT_OK, "Success"), purchase);
                 return true;
             }
         }
         else if (resultCode == Activity.RESULT_OK) {
             // result code was OK, but in-app billing response was not OK.
             logDebug("Result code was OK but in-app billing response was not OK: " + getResponseDesc(responseCode));
-            //if (mPurchaseListener != null) {
-            //    result = new IabResult(responseCode, "Problem purchashing item.");
-            //    mPurchaseListener.onIabPurchaseFinished(result, null);
-            //}
+            if (mPurchaseListener != null) {
+                result = new IabResult(responseCode, "Problem purchashing item.");
+                mPurchaseListener.onIabPurchaseFinished(result, null);
+            }
         }
         else if (resultCode == Activity.RESULT_CANCELED) {
             logDebug("Purchase canceled - Response: " + getResponseDesc(responseCode));
-            //result = new IabResult(IABHELPER_USER_CANCELLED, "User canceled.");
-            //if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
+            result = new IabResult(IABHELPER_USER_CANCELLED, "User canceled.");
+            if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
             return false;
         }
         else {
             logError("Purchase failed. Result code: " + Integer.toString(resultCode));
             //        + ". Response: " + getResponseDesc(responseCode));
-            //result = new IabResult(IABHELPER_UNKNOWN_PURCHASE_RESPONSE, "Unknown purchase response.");
-            //if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
+            result = new IabResult(IABHELPER_UNKNOWN_PURCHASE_RESPONSE, "Unknown purchase response.");
+            if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
             return false;
         }
         return false;
@@ -719,7 +718,7 @@ public class IabHelper {
         logDebug("Starting async operation: " + operation);
     }
 
-    void flagEndAsync() {
+    public void flagEndAsync() {
         logDebug("Ending async operation: " + mAsyncOperation);
         mAsyncOperation = "";
         mAsyncInProgress = false;
