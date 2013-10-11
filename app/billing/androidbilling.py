@@ -184,9 +184,6 @@ class AndroidBilling(EventDispatcher):
             Logger.info('Passing result to IAB helper')
             if self.helper.handleActivityResult(requestCode, responseCode, Intent):
                 Logger.info('Helper completed the request.')
-                # here we go the long way around and get the inventory
-                # this is a workaround due to _purchase_finished failing at the 
-                # point of invocation inside IabHelper.java around line 425
                 self._get_inventory()
             return True
     
